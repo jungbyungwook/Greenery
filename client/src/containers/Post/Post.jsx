@@ -15,9 +15,10 @@ import {
 
 export function Post() {
   const navigate = useNavigate();
-  const [title, setTitle] = useState("");
-  const inputRef = useRef([]);
   const { postId } = useParams();
+  const inputRef = useRef([]);
+
+  const [title, setTitle] = useState("");
   const [inputList, setInputList] = useState([
     {
       content: "",
@@ -47,12 +48,6 @@ export function Post() {
       });
   };
 
-  useEffect(() => {
-    // 첫 렌더링시
-    postId && Read(postId);
-  }, []);
-
-  // handle input change
   const handleInputChange = (e, index) => {
     const { name, value } = e.target;
     const list = [...inputList];
@@ -64,14 +59,12 @@ export function Post() {
     setInputList(list);
   };
 
-  // handle click event of the Remove button
   const handleRemoveClick = index => {
     const list = [...inputList];
     list.splice(index, 1);
     setInputList(list);
   };
 
-  // handle click event of the Add button
   const handleAddClick = () => {
     setInputList([...inputList, { content: "", imgUrl: "" }]);
   };
@@ -112,6 +105,11 @@ export function Post() {
           });
   };
 
+  useEffect(() => {
+    // 글 수정시
+    postId && Read(postId);
+  }, []);
+
   return (
     <PostWrapper>
       <Header id="PostPage"></Header>
@@ -128,8 +126,8 @@ export function Post() {
               <ContentSection key={i}>
                 <label>
                   <input
-                    ref={e => {
-                      inputRef.current[i] = e;
+                    ref={ref => {
+                      inputRef.current[i] = ref;
                     }}
                     type="file"
                     name="fileImage"
